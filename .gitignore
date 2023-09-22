@@ -3,6 +3,7 @@ Forms/
 DataBase/
 Export/
 Images/
+.venv/
 09052023.xlsm
 DBpassword.txt
 SQLconStrings.txt
