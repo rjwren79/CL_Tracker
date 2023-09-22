@@ -1,7 +1,8 @@
-logs/
+Logs/
+Forms/
 DataBase/
 Export/
-images/
+Images/
 09052023.xlsm
 DBpassword.txt
 SQLconStrings.txt
