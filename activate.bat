@@ -1,1 +1,0 @@
-"C:\Users\momabrd81\3D Objects\Projects\CL_Tracker\.venv\Scripts\activate.bat"
