@@ -1,0 +1,81 @@
+  /*
+  ToDo Tree
+  */
+  "todo-tree.tree.autoRefresh": true,
+  "todo-tree.regex.regex": "('|//|#|<!--|;|/\\*|^|^[ \\t]*(-|\\d+.))\\s*($TAGS)",
+  "todo-tree.highlights.customHighlight": {
+      "'[ ] WARN:": {
+          "foreground": "white",
+          "background": "red",
+          "iconColour": "red",
+          "icon": "alert",
+          "type": "text"
+      },
+      "'[ ] TODO:": {
+          "foreground": "black",
+          "background": "green",
+          "iconColour": "green",
+          "icon": "project-roadmap",
+          "type": "text"
+      },
+      "'[ ] BUG:": {
+          "foreground": "black",
+          "background": "red",
+          "iconColour": "red",
+          "icon": "bug"
+      },
+      "'[ ] REVIEW:": {
+          "foreground": "black",
+          "background": "cyan",
+          "iconColour": "lightblue",
+          "icon": "eye"
+      },
+      "'[ ] FIXME:": {
+          "foreground": "black",
+          "background": "orange",
+          "iconColour": "orange",
+          "icon": "alert"
+      },
+      "'[ ] REF:": {
+          "foreground": "black",
+          "background": "grey",
+          "iconColour": "grey",
+          "icon": "link",
+          "type": "tag"
+      },
+      "'[ ] DEL:": {
+          "foreground": "black",
+          "background": "red",
+          "iconColour": "red",
+          "icon": "trash"
+      },
+  },
+  "todo-tree.highlights.defaultHighlight": {
+      "icon": "check",
+      "type": "text-and-comment"
+  },
+  "todo-tree.general.tags": [
+      "'[ ] BUG:",
+      "'[ ] FIXME:",
+      "'[ ] REVIEW:",
+      "'[ ] TODO:",
+      "'[ ] REF:",
+      "'[ ] WARN:",
+      "'[ ] DEL:",
+      "'[x] BUG:",
+      "'[x] FIXME:",
+      "'[x] REVIEW:",
+      "'[x] TODO:",
+      "'[x] REF:",
+      "'[x] WARN:",
+      "'[x] DEL:",
+  ],
+  "launch": {
+      "configurations": [
+      
+      ]
+  },
+  "workbench.settings.applyToAllProfiles": [
+      "languageServerVBA.trace.server"
+  ],
+  "explorer.confirmDragAndDrop": false,

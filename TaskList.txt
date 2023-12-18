@@ -1,0 +1,19 @@
+fix performance mode 
+	ensure on and off are defined correctly
+	ensure it is switched appropriately
+
+asking to save on exit
+
+with Alerts sheet
+	fix welcome lbl
+	hide scroll bars (in SheetPrep)
+	fix range for btn_export (over writes)
+		header
+		admin range
+
+Bug when entering phone number that includes other characters.
+	Display db entry to format "(555) 555-5555"
+	Remove format and all non-number characters and store in db as "5555555555"
+	check for 7 digits
+	
+look in to hiding macros
