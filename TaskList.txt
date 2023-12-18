@@ -12,8 +12,8 @@ with Alerts sheet
 		admin range
 
 Bug when entering phone number that includes other characters.
-	Display db entry to format "(555) 555-5555"
-	Remove format and all non-number characters and store in db as "5555555555"
-	check for 7 digits
+	Display db entry to format "(555) 555-5555" Completed by RJW
+	Remove format and all non-number characters and store in db as "5555555555" Completed by RJW
+	check for 10 digits Completed by RJW
 	
 look in to hiding macros
