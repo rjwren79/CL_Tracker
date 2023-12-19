@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} UF_Employee 
    Caption         =   "Employee Details"
-   ClientHeight    =   8592.001
+   ClientHeight    =   8595.001
    ClientLeft      =   120
    ClientTop       =   468
    ClientWidth     =   17472
@@ -237,7 +237,7 @@ StartSub:
         Me.date_PSQdue.Value = vbNullString
     ElseIf Me.cbo_PSQstatus.Value = "PSQ Terminated" Then
         Me.date_PSQdue.Value = vbNullString
-        If cbo_invType.Value = "Tier 3R" Or cbo_invType.Value = "Tier 5R" Then GoTo ExitSub
+        If cbo_INVtype.Value = "Tier 3R" Or cbo_INVtype.Value = "Tier 5R" Then GoTo ExitSub
         Me.cbo_ELIGstatus.Value = "None"
         Me.date_ELIG.Value = Date
     End If
@@ -364,10 +364,6 @@ Private Sub txt_MName_AfterUpdate()
     
 End Sub
 
-Private Sub Label1_Click()
-
-End Sub
-
 Private Sub UserForm_Activate()
 
 StartSub:
@@ -468,12 +464,14 @@ StartSub:
                 fldName = fld.Name
                 Orkin "Field Name: " & fldName
                 Set ctrl = .Controls(fldName)
-                If Not Left(ctrl.Name, 5) = "date_" Then
-                    ctrl.Value = fld.Value
+                If Left(ctrl.Name, 5) = "date_" And Not ctrl.Value = vbNullString Then
+                    ctrl.Value = Format(CDate(fld.Value), "MM/DD/YYYY")
+                ElseIf ctrl.Name = "num_SSN" Then
+                    ctrl.Value = Format(fld.Value, "000-00-0000")
+                ElseIf ctrl.Name = "num_PHONE" Then
+                    ctrl.Value = Format(fld.Value, "(000) 000-0000")
                 ElseIf ctrl.Name = "info_Tag" Then
                     Orkin ctrl.Value
-                ElseIf Not ctrl.Value = vbNullString Then
-                    ctrl.Value = Format(CDate(fld.Value), "MM/DD/YYYY")
                 ElseIf IsNull(fld.Value) Then
                     ctrl.Value = Null
                 ElseIf Not IsNull(fldName) Then
@@ -596,7 +594,7 @@ StartSub:
         .Cells(rowNum, 25).Value = Me.date_PSQdue.Value
 
     'Inv
-        .Cells(rowNum, 23).Value = Me.cbo_invType.Value
+        .Cells(rowNum, 23).Value = Me.cbo_INVtype.Value
         .Cells(rowNum, 21).Value = Me.date_INVopen.Value
         .Cells(rowNum, 22).Value = Me.date_INVclose.Value
         .Cells(rowNum, 29).Value = Me.date_NDA.Value
@@ -655,7 +653,7 @@ StartSub:
             .Value = "Radford"
         End With
         
-        With cbo_invType
+        With cbo_INVtype
             .AddItem vbNullString
             .AddItem "NACLC"
             .AddItem "RSI"
@@ -741,22 +739,21 @@ StartSub:
     End If
     
     With Me
-    On Error GoTo ConnErr
-    Dim fld As ADODB.Field
-    Dim ctrl As control
-    Dim fldName As String
-        
+        On Error GoTo ConnErr
+        Dim fld As ADODB.Field
         For Each fld In rst.Fields
         If Not fld.Name = "info_Tag" Then
+            Dim fldName As String
             fldName = fld.Name
+            Dim ctrl As control
             Set ctrl = .Controls(fldName)
             If Not fldName = "db_ID" Then
-                If Not Left(ctrl.Name, 5) = "date_" Then
-                    fld.Value = ctrl.Value
-                ElseIf Not ctrl.Value = vbNullString Then
+                If Left(ctrl.Name, 5) = "date_" And Not ctrl.Value = vbNullString Then
                     fld.Value = Format(CDate(ctrl.Value), "MM/DD/YYYY")
-                Else
+                ElseIf IsNullOrEmpty(ctrl.Value) Then
                     fld.Value = Null
+                Else
+                    fld.Value = ctrl.Value
                 End If
                 Orkin "Saved " & ctrl.Value & " To " & fld.Name
             End If
@@ -961,6 +958,8 @@ StartSub:
             Else
                 GoTo valCancel
             End If
+        Else
+            .num_SSN.Value = CleanSsnNumber(.num_SSN.Value)
         End If
 
     'Birth
@@ -993,8 +992,8 @@ StartSub:
             Else
                 GoTo valCancel '<~~~ Return to UserForm
             End If
-'        Else
-'            .num_PHONE.Value = .num_PHONE.Value
+        Else
+           .num_PHONE.Value = CleanPhoneNumber(.num_PHONE.Value)
         End If
         If IsNullOrEmpty(.txt_EMAIL.Value) Then
             ufContinue = MsgBox("Email required." & vbNewLine & "Do you want to continue without?", vbQuestion + vbYesNo + vbDefaultButton2, "Required Information")
@@ -1201,3 +1200,60 @@ ErrCtrl:
     GoTo ExitSub
     
 End Sub
+
+Private Function CheckPhoneNumber(PhoneNumber As String) As Boolean
+    
+    CheckPhoneNumber = False
+    
+    Dim PhoneNumberLength As Long
+    PhoneNumberLength = Len(PhoneNumber)
+    
+    If PhoneNumberLength = 10 Then CheckPhoneNumber = True
+        
+End Function
+
+Private Function CleanPhoneNumber(PhoneNumber As String) As String
+    
+    If Not PhoneNumber = vbNullString Then
+        Dim i As Long
+        For i = 1 To Len(PhoneNumber)
+            If Asc(Mid(PhoneNumber, i, 1)) >= Asc("0") And Asc(Mid(PhoneNumber, i, 1)) <= Asc("9") Then
+            Dim RetainNumber As String
+            RetainNumber = RetainNumber + Mid(PhoneNumber, i, 1)
+        End If
+        Next
+    Else
+        Exit Function
+    End If
+    
+    If CheckPhoneNumber(RetainNumber) Then CleanPhoneNumber = RetainNumber
+End Function
+
+
+Private Function CheckSsn(SsNumber As String) As Boolean
+    
+    CheckSsn = False
+    
+    Dim CheckSsnLength As Long
+    CheckSsnLength = Len(SsNumber)
+    
+    If CheckSsnLength = 9 Then CheckSsn = True
+        
+End Function
+
+Private Function CleanSsnNumber(SsNumber As String) As String
+    
+    If Not SsNumber = vbNullString Then
+        Dim i As Long
+        For i = 1 To Len(SsNumber)
+            If Asc(Mid(SsNumber, i, 1)) >= Asc("0") And Asc(Mid(SsNumber, i, 1)) <= Asc("9") Then
+            Dim RetainNumber As String
+            RetainNumber = RetainNumber + Mid(SsNumber, i, 1)
+        End If
+        Next
+    Else
+        Exit Function
+    End If
+    
+    If CheckSsn(RetainNumber) Then CleanSsnNumber = RetainNumber
+End Function
