@@ -62,12 +62,12 @@ StartSub:
    On Error GoTo ExitSub
    
     With UF_Employee
-        If Me.cbo_invType.Value = "Paper Version" Then
+        If Me.cbo_INVtype.Value = "Paper Version" Then
             .cbo_PSQstatus.Value = "Paper Version"
             .date_PSQdue.Value = Date + 6
             
         Else
-            .cbo_invType.Value = Me.cbo_invType.Value
+            .cbo_INVtype.Value = Me.cbo_INVtype.Value
             .date_DISS.Value = Me.txt_dAddSMO.Value
             .date_INVopen.Value = Date
             .cbo_ELIGstatus.Value = "PSQ Initialized"
@@ -102,7 +102,7 @@ Private Sub Load_cbo()
 StartSub:
    On Error GoTo ExitSub
    
-    With Me.cbo_invType
+    With Me.cbo_INVtype
         .AddItem vbNullString
         .AddItem "Paper Version"
         .AddItem "Confendential"
